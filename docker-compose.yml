@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  mongo-product:
+    image: mongo:latest
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-product-data:/data/db
+
+  mongo-user:
+    image: mongo:latest
+    ports:
+      - "27019:27017"
+    volumes:
+      - mongo-user-data:/data/db
+
+  user-service:
+    build:
+      context: ./user-service  # Ensure this path is correct
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mongo-user
+
+  product-service:
+    build:
+      context: ./product-service  # Ensure this path is correct
+    ports:
+      - "5002:5002"
+    depends_on:
+      - mongo-product
+
+  cart-service:  # Ensure this service is defined with a unique name
+    build:
+      context: ./cart-service  # Adjust path if necessary
+    ports:
+      - "5003:5003"
+
+  order-service:  # Ensure this service is defined with a unique name
+    build:
+      context: ./order-service  # Adjust path if necessary
+    ports:
+      - "5004:5004"
+
+  payment-service:  # Ensure this service is defined correctly
+    build:
+      context: ./payment-service  # Adjust path if necessary
+    ports:  # Make sure this is a list
+      - "5005:5005"
+
+  frontend:
+    build:
+      context: ./frontend  # Ensure this path is correct
+    ports:
+      - "3000:3000"
+    depends_on:
+      - user-service
+      - product-service
+      - cart-service  # Add dependency on cart-service if used
+      - order-service  # Add dependency on order-service if used
+      - payment-service  # Add dependency on payment-service if used
+
+  api-gateway:
+    build:
+      context: ./api-gateway  # Specify the correct path to your API Gateway
+    ports:
+      - "5000:5000"  # Specify the port for the API Gateway
+    depends_on:
+      - user-service
+      - product-service
+      - cart-service  # Add dependency on cart-service if used
+      - order-service  # Add dependency on order-service if used
+      - payment-service  # Add dependency on payment-service if used
+
+volumes:
+  mongo-data:
+  mongo-product-data:
+  mongo-user-data:

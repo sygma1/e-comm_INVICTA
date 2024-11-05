@@ -1,0 +1,21 @@
+{
+  "name": "e-comm",
+  "version": "1.0.0",
+  "description": "Microservices-based e-commerce application",
+  "scripts": {
+    "start": "docker-compose up --build",    
+    "stop": "docker-compose down",           
+    "restart": "npm run stop && npm run start", 
+    "test": "echo 'No tests defined yet, add tests in each service.' && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sygma1/e-comm_INVICTA.git"
+  },
+  "author": "sygma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sygma1/e-comm_INVICTA/issues"
+  },
+  "homepage": "https://github.com/sygma1/e-comm_INVICTA#readme"
+}

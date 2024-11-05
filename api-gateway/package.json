@@ -1,0 +1,16 @@
+{
+    "name": "api-gateway",
+    "version": "1.0.0",
+    "description": "API Gateway for e-commerce",
+    "main": "index.js",
+    "scripts": {
+      "start": "node index.js"
+    },
+    "dependencies": {
+      "axios": "^0.21.1",
+      "express": "^4.17.1",
+      "mongoose": "^7.5.0"
+    },
+    "license": "ISC"
+  }
+  

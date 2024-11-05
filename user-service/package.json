@@ -1,0 +1,16 @@
+{
+    "name": "user-service",
+    "version": "1.0.0",
+    "description": "User management service for e-commerce application",
+    "main": "index.js",
+    "scripts": {
+      "start": "node index.js"
+    },
+    "dependencies": {
+      "express": "^4.17.1",
+      "mongoose": "^7.5.0",
+      "bcrypt": "^5.0.1",
+      "jsonwebtoken": "^8.5.1"
+    }
+  }
+  
