@@ -6,11 +6,13 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
+import Header from './components/Header';
 
 const App = () => {
     return (
         <Router>
             <div>
+                <Header /> {/* Make sure this is rendered */}
                 <Switch>
                     <Route path="/" component={Login} />
                     <Route path="/register" component={Register} />

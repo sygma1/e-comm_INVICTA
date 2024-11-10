@@ -4,13 +4,13 @@
     "description": "User management service for e-commerce application",
     "main": "index.js",
     "scripts": {
-      "start": "node index.js"
+        "start": "node index.js"
     },
     "dependencies": {
-      "express": "^4.17.1",
-      "mongoose": "^7.5.0",
-      "bcrypt": "^5.0.1",
-      "jsonwebtoken": "^8.5.1"
+        "bcrypt": "^5.0.1",
+        "dotenv": "^16.4.5",
+        "express": "^4.17.1",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^7.5.0"
     }
-  }
-  
+}
