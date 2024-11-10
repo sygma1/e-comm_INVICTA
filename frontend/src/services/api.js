@@ -2,12 +2,22 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8080'; // API Gateway URL
 
-export const getProducts = () => {
-    return axios.get(`${API_BASE_URL}/api/products`);
+export const getProducts = async () => {
+    try {
+      const response = await axios.get('http://localhost:8082/api/products');
+      return response;
+    } catch (error) {
+      throw new Error('Error fetching products: ' + error.message);
+    }
 };
 
-export const getProductById = (id) => {
-    return axios.get(`${API_BASE_URL}/api/products/${id}`);
+export const getProductById = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:8082/api/products/${id}`);
+      return response;
+    } catch (error) {
+      throw new Error('Error fetching product details');
+    }
 };
 
 export const registerUser = (userData) => {

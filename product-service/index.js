@@ -1,39 +1,28 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
-const Product = require('./models/Product');
+const productRoutes = require('./routes/productRoutes'); // Correct the path to your productRoutes.js file
+
 const app = express();
-const PORT = process.env.PORT || 6002;
+const PORT = process.env.PORT || 8082;
+
+// Enable CORS for all routes
+app.use(cors({
+  origin: 'http://localhost:3000',  // Allow only requests from this domain
+}));
 
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect('mongodb://mongodb:27017/mydatabase', {
+mongoose.connect('mongodb://localhost:27017/mydatabase', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.error('MongoDB connection error:', err));
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
-// Define routes for products
-app.get('/api/products', async (req, res) => {
-  try {
-    const products = await Product.find();
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-app.post('/api/products', async (req, res) => {
-  const newProduct = new Product(req.body);
-
-  try {
-    const savedProduct = await newProduct.save();
-    res.status(201).json(savedProduct);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
+// Use the routes defined in productRoutes.js
+app.use('/api/products', productRoutes); // Now the routes defined in productRoutes will be used
 
 // Start the server
 app.listen(PORT, () => {

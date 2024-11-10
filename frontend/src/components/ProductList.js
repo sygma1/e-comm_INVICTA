@@ -14,6 +14,7 @@ const ProductList = () => {
                 setProducts(response.data);
             } catch (err) {
                 setError('Error fetching products');
+                console.error(err);
             } finally {
                 setLoading(false);
             }
@@ -22,19 +23,39 @@ const ProductList = () => {
         fetchProducts();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
+    if (loading) return (
+        <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+            <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    );
+
+    if (error) return (
+        <div className="alert alert-danger" role="alert">
+            {error}
+        </div>
+    );
 
     return (
-        <div>
-            <h2>Products</h2>
-            <ul>
+        <div className="container mt-5">
+            <h2 className="mb-4">Products</h2>
+            <div className="row">
                 {products.map(product => (
-                    <li key={product.id}>
-                        <Link to={`/product/${product.id}`}>{product.name}</Link> - ${product.price}
-                    </li>
+                    <div className="col-md-4" key={product._id}>
+                        <div className="card mb-4">
+                            <img src={product.image} className="card-img-top" alt={product.name} />
+                            <div className="card-body">
+                                <h5 className="card-title">{product.name}</h5>
+                                <p className="card-text">Price: ${product.price}</p>
+                                <Link to={`/product/${product._id}`} className="btn btn-primary">
+                                    <i className="bi bi-eye"></i> View Details
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };

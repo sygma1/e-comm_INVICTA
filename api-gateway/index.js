@@ -14,10 +14,11 @@ app.get('/hello', (req, res) => {
 // Example route to get products from the product service
 app.get('/api/products', async (req, res) => {
   try {
-    const response = await axios.get('http://product-service:8082/api/products'); // Service name and port
-    res.json(response.data);
+    const products = await Product.find();
+    res.json(products);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching products' });
+    console.error('Error fetching products:', error);  // Log the error in the backend
+    res.status(500).send('Error fetching products');
   }
 });
 
