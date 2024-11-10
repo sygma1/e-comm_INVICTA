@@ -14,12 +14,12 @@ const App = () => {
             <div>
                 <Header /> {/* Make sure this is rendered */}
                 <Switch>
-                    <Route path="/" component={Login} />
-                    <Route path="/register" component={Register} />
-                    <Route path="/productlist" exact component={ProductList} />
-                    <Route path="/product/:id" component={ProductDetail} />
-                    <Route path="/cart" component={Cart} />
-                    <Route path="/checkout" component={Checkout} />
+                    <Route path="/login" exact render={() => <Login />} />
+                    <Route path="/register" exact render={() => <Register />} />
+                    <Route path="/productlist" exact render={() => <ProductList />} />
+                    <Route path="/product/:id" exact render={() => <ProductDetail />} />
+                    <Route path="/cart" exact render={() => <Cart />} />
+                    <Route path="/checkout" exact render={() => <Checkout />} />
                 </Switch>
             </div>
         </Router>

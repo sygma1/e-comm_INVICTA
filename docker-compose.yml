@@ -12,7 +12,7 @@ services:
     build:
       context: ./user-service
     ports:
-      - "5001:5001"
+      - "6001:6001"
     depends_on:
       - mongo
 
@@ -20,7 +20,7 @@ services:
     build:
       context: ./product-service
     ports:
-      - "5002:5002"
+      - "6002:6002"
     depends_on:
       - mongo
 
@@ -28,7 +28,7 @@ services:
     build:
       context: ./cart-service
     ports:
-      - "5003:5003"
+      - "6003:6003"
     depends_on:
       - mongo
 
@@ -36,7 +36,7 @@ services:
     build:
       context: ./order-service
     ports:
-      - "5004:5004"
+      - "6004:6004"
     depends_on:
       - mongo
 
@@ -44,7 +44,7 @@ services:
     build:
       context: ./payment-service
     ports:
-      - "5005:5005"
+      - "6005:6005"
     depends_on:
       - mongo
 
@@ -64,7 +64,7 @@ services:
     build:
       context: ./api-gateway
     ports:
-      - "5000:5000"
+      - "6000:6000"
     depends_on:
       - user-service
       - product-service

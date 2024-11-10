@@ -2,12 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Product = require('./models/Product');
 const app = express();
-const PORT = process.env.PORT || 5002;
+const PORT = process.env.PORT || 6002;
 
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect('mongodb://mongodb:27017/ecomm', {
+mongoose.connect('mongodb://mongodb:27017/mydatabase', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })

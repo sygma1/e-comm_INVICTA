@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Payment = require('./models/Payment');
 const app = express();
-const PORT = process.env.PORT || 5005;
+const PORT = process.env.PORT || 6005;
 
 app.use(express.json());
 

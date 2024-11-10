@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000'; // API Gateway URL
+const API_BASE_URL = 'http://localhost:8080'; // API Gateway URL
 
 export const getProducts = () => {
     return axios.get(`${API_BASE_URL}/api/products`);

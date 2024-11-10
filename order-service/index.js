@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Order = require('./models/Order');
 const app = express();
-const PORT = process.env.PORT || 5004;
+const PORT = process.env.PORT || 6004;
 
 app.use(express.json());
 
