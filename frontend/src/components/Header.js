@@ -8,20 +8,20 @@ const Header = () => {
   // Check if the user is logged in
   useEffect(() => {
     const user = localStorage.getItem('user');
-    setIsAuthenticated(!!user);
+    setIsAuthenticated(!!user); // Set authentication state based on localStorage
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('user'); // Remove user info from localStorage
     setIsAuthenticated(false); // Update state
-    history.push('/login'); // Redirect to home page
+    history.push('/login'); // Redirect to login page
   };
 
   return (
     <header>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
-          <Link to="/" className="navbar-brand d-flex align-items-center">
+          <Link to="/productlist" className="navbar-brand d-flex align-items-center">
             <i className="bi bi-bag me-2"></i> E-Commerce App
           </Link>
           <button
@@ -38,7 +38,7 @@ const Header = () => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
-                <Link to="/" className="nav-link d-flex align-items-center">
+                <Link to="/productlist" className="nav-link d-flex align-items-center">
                   <i className="bi bi-house me-1"></i> Home
                 </Link>
               </li>
@@ -58,18 +58,11 @@ const Header = () => {
                   </button>
                 </li>
               ) : (
-                <>
-                  <li className="nav-item">
-                    <Link to="/login" className="nav-link d-flex align-items-center">
-                      <i className="bi bi-box-arrow-in-right me-1"></i> Login
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/register" className="nav-link d-flex align-items-center">
-                      <i className="bi bi-person-plus me-1"></i> Register
-                    </Link>
-                  </li>
-                </>
+                <li className="nav-item">
+                  <Link to="/login" className="nav-link d-flex align-items-center">
+                    <i className="bi bi-box-arrow-in-right me-1"></i> Login
+                  </Link>
+                </li>
               )}
             </ul>
           </div>

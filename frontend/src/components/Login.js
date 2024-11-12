@@ -8,15 +8,17 @@ const Login = () => {
     const history = useHistory();
     const location = useLocation();
 
-    // If state is passed from registration, pre-fill the login form with that data
+    // If redirected from a protected route, get the intended path
+    const redirectPath = location.state?.from || '/productlist';
+
     useEffect(() => {
-        if (location.state) {
+        if (location.state?.username && location.state?.password) {
             setUserData({
                 username: location.state.username,
                 password: location.state.password,
             });
         }
-    }, [location.state]); // Run only when location.state changes
+    }, [location.state]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -26,19 +28,24 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await loginUser(userData); // Send login request
-            console.log('Login successful:', response); // Log response (optional)
+            const response = await loginUser(userData); // Login API call
             setMessage('Login successful');
-            localStorage.setItem('user', JSON.stringify(response.data)); // Store user info
-            history.push('/productlist'); // Redirect to products page after successful login
+
+            // Store user data in localStorage (e.g., username, token, etc.)
+            localStorage.setItem('user', JSON.stringify(response.data));
+            localStorage.setItem('userId', response.data.user._id);
+
+            // Redirect to the intended page or product list
+            history.push(redirectPath);
+        
         } catch (error) {
-            setMessage('Login failed');
+            setMessage(error.response?.data?.message || 'Login failed');
             console.error('Login error:', error);
         }
     };
 
     const handleRegisterRedirect = () => {
-        history.push('/register'); // Redirect to the registration page
+        history.push('/register'); // Redirect to register page
     };
 
     return (
@@ -82,7 +89,7 @@ const Login = () => {
                 </form>
                 {message && <div className="mt-3 alert alert-info">{message}</div>}
 
-                {/* Register Button */}
+                {/* Register Redirect */}
                 <div className="mt-3 text-center">
                     <p>Don't have an account?</p>
                     <button

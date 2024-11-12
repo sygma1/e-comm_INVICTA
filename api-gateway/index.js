@@ -48,23 +48,28 @@ app.post('/api/users/login', async (req, res) => {
   }
 });
 
-// Example route to get cart items for a user
+// Get cart items for user
 app.get('/api/cart/:userId', async (req, res) => {
   try {
-    const response = await axios.get(`http://localhost:8083/api/cart/${req.params.userId}`); // Ensure cart service exists
+    const response = await axios.get(`http://localhost:8083/api/cart/${req.params.userId}`);
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching cart items' });
   }
 });
 
-// Example route to add an item to the cart
+// Route for adding product to cart
 app.post('/api/cart', async (req, res) => {
+  console.log('Request received by API Gateway for adding to cart:', req.body); // Log the incoming request
   try {
-    const response = await axios.post('http://localhost:8083/api/cart', req.body); // Ensure cart service exists
+    if (!req.body.userId) {
+      return res.status(400).json({ message: 'User ID is required' });
+    }
+    const response = await axios.post('http://localhost:8083/api/cart', req.body);
     res.json(response.data);
   } catch (error) {
-    res.status(500).json({ message: 'Error adding item to cart' });
+    console.error('Error adding to cart in API Gateway:', error.response ? error.response.data : error.message);
+    res.status(500).json({ message: 'Error adding product to cart' });
   }
 });
 

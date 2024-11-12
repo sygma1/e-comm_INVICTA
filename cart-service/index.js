@@ -1,41 +1,34 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Cart = require('./models/Cart');
+const Product = require('./models/Product');
+const cors = require('cors');
+const cartRoutes = require('./routes/cartRoutes');  // Import cartRoutes.js
 const app = express();
-const PORT = process.env.PORT || 5003;
+const PORT = process.env.PORT || 8083;
 
 app.use(express.json());
 
+app.use(cors({
+  origin: 'http://localhost:3000',  // Allow only requests from this domain
+}));
+
 // Connect to MongoDB
-mongoose.connect('mongodb://mongodb:27017/ecomm', {
+mongoose.connect('mongodb://localhost:27017/mydatabase', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
 
-// Define routes for cart
-app.get('/api/cart/:userId', async (req, res) => {
-  try {
-    const cart = await Cart.findOne({ userId: req.params.userId });
-    res.json(cart);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-app.post('/api/cart', async (req, res) => {
-  const newCart = new Cart(req.body);
-
-  try {
-    const savedCart = await newCart.save();
-    res.status(201).json(savedCart);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
+// Use the routes defined in cartRoutes.js
+app.use('/api/cart', cartRoutes);  // Use cartRoutes for any path starting with /api/cart
 
 // Start the server
 app.listen(PORT, () => {
   console.log(`Cart service listening on port ${PORT}`);
 });
+
+
+
+

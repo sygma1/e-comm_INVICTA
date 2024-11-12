@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080'; // API Gateway URL
+const API_BASE_URL = 'http://localhost:8080';
 
 export const getProducts = async () => {
     try {
@@ -24,21 +24,40 @@ export const registerUser = (userData) => {
     return axios.post(`${API_BASE_URL}/api/users/register`, userData);
 };
 
-export const removeFromCart = (itemId) => {
-    return axios.delete(`${API_BASE_URL}/api/cart`, { data: { id: itemId } });
+
+
+export const addToCart = (item) => {
+  return axios.post(`${API_BASE_URL}/api/cart`, item); // This ensures consistency in URLs
+};
+
+export const getCartItems = async (userId) => {
+  try {
+    const response = await axios.get('http://localhost:8080/api/cart', {
+      params: { userId }, // Pass userId as a query parameter
+    });
+    return response.data; // Return the cart items data
+  } catch (error) {
+    console.error('Error fetching cart items:', error);
+    throw new Error('Error fetching cart items');
+  }
+};
+
+export const removeFromCart = async (userId, productId) => {
+  try {
+    const response = await axios.delete('http://localhost:8080/api/cart', {
+      params: { userId, productId }, // Pass userId and productId as query params
+    });
+    return response;
+  } catch (error) {
+    console.error('Error removing item from cart', error);
+    throw error; // Rethrow to propagate the error
+  }
 };
 
 export const loginUser = (userData) => {
     return axios.post(`${API_BASE_URL}/api/users/login`, userData);
 };
 
-export const getCartItems = (userId) => {
-    return axios.get(`${API_BASE_URL}/api/cart/${userId}`);
-};
-
-export const addToCart = (item) => {
-    return axios.post(`${API_BASE_URL}/api/cart`, item);
-};
 
 export const checkout = (cartData) => {
     return axios.post(`${API_BASE_URL}/api/checkout`, cartData);

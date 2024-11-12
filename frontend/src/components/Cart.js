@@ -8,8 +8,9 @@ const Cart = () => {
 
     useEffect(() => {
         const fetchCartItems = async () => {
+            const userId = 'some-user-id';  // Replace this with the actual userId
             try {
-                const response = await getCartItems(); // Fetch cart items from backend
+                const response = await getCartItems(userId);  // Pass userId to the API
                 setCartItems(response.data);
             } catch (err) {
                 setError('Error fetching cart items');
@@ -17,7 +18,7 @@ const Cart = () => {
                 setLoading(false);
             }
         };
-
+    
         fetchCartItems();
     }, []);
 
