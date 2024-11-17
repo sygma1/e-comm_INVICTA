@@ -2,12 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Payment = require('./models/Payment');
 const app = express();
-const PORT = process.env.PORT || 6005;
+const PORT = process.env.PORT || 8085;
 
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect('mongodb://mongodb:27017/ecomm', {
+mongoose.connect('mongodb://mongo-service:27017/mydatabase', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })

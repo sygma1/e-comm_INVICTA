@@ -3,108 +3,131 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 8080; // Update to match the API gateway port
 
+const USER_SERVICE_URL = 'user-service:8081'; 
+const PRODUCT_SERVICE_URL = 'product-service:8082'; 
+const CART_SERVICE_URL = 'cart-service:8083'; 
+const ORDER_SERVICE_URL = 'order-service:8084'; 
+const PAYMENT_SERVICE_URL= "payment-service:8085";
+const FRONTEND_URL='frontend:80';
+
 const cors = require('cors');
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: FRONTEND_URL })); // Allow frontend on localhost:3000 to communicate with API Gateway
 app.use(express.json());
 
 app.get('/hello', (req, res) => {
   res.send('Hello, world!');
 });
 
-// Example route to get products from the product service
+// Route to get products from the product service
 app.get('/api/products', async (req, res) => {
   try {
-    const products = await Product.find();
-    res.json(products);
+    const response = await axios.get(`${PRODUCT_SERVICE_URL}/api/products`);
+    res.json(response.data);
   } catch (error) {
-    console.error('Error fetching products:', error);  // Log the error in the backend
+    console.error('Error fetching products from product-service:', error);  // Log the error in the backend
     res.status(500).send('Error fetching products');
   }
 });
 
-// Example route to handle user registration
-app.post('/api/users/register', async (req, res) => {
+// Route to get a product by ID from the product service
+app.get('/api/products/:id', async (req, res) => {
   try {
-      console.log('Received data:', req.body);  // Log request data
-      const response = await axios.post('http://localhost:8081/api/users/register', req.body);
-      console.log('Response from user-service:', response.data);  // Log response from user service
-      res.json(response.data);
+    const response = await axios.get(`${PRODUCT_SERVICE_URL}/api/products/${req.params.id}`);
+    res.json(response.data);
   } catch (error) {
-      console.error('Error in API Gateway:', error.message);  // Log error details
-      res.status(500).json({ message: 'Error registering user' });
+    console.error('Error fetching product details:', error);
+    res.status(500).send('Error fetching product details');
   }
 });
 
-// Example route to handle user login
-app.post('/api/users/login', async (req, res) => {
+// Route to handle user registration via user service
+app.post('/api/users/register', async (req, res) => {
   try {
-    console.log('Login attempt data:', req.body);  // Log incoming request data
-    const response = await axios.post('http://localhost:8081/api/users/login', req.body);
-    console.log('Response from user-service:', response.data);  // Log successful response
+    const response = await axios.post(`${USER_SERVICE_URL}/api/users/register`, req.body);
     res.json(response.data);
   } catch (error) {
-    console.error('Error during login in API Gateway:', error);  // Log error details
+    console.error('Error in API Gateway during registration:', error.message);
+    res.status(500).json({ message: 'Error registering user' });
+  }
+});
+
+// Route to handle user login via user service
+app.post('/api/users/login', async (req, res) => {
+  try {
+    const response = await axios.post(`${USER_SERVICE_URL}/api/users/login`, req.body);
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error during login in API Gateway:', error);
     res.status(500).json({ message: 'Error logging in user', error: error.message });
   }
 });
 
-// Get cart items for user
+// Route to get cart items for a user from the cart service
 app.get('/api/cart/:userId', async (req, res) => {
   try {
-    const response = await axios.get(`http://localhost:8083/api/cart/${req.params.userId}`);
+    const response = await axios.get(`${CART_SERVICE_URL}/api/cart/${req.params.userId}`);
     res.json(response.data);
   } catch (error) {
+    console.error('Error fetching cart items:', error);
     res.status(500).json({ message: 'Error fetching cart items' });
   }
 });
 
-// Route for adding product to cart
+// Route to add a product to the cart via the cart service
 app.post('/api/cart', async (req, res) => {
-  console.log('Request received by API Gateway for adding to cart:', req.body); // Log the incoming request
   try {
     if (!req.body.userId) {
       return res.status(400).json({ message: 'User ID is required' });
     }
-    const response = await axios.post('http://localhost:8083/api/cart', req.body);
+    const response = await axios.post(`${CART_SERVICE_URL}/api/cart`, req.body);
     res.json(response.data);
   } catch (error) {
-    console.error('Error adding to cart in API Gateway:', error.response ? error.response.data : error.message);
+    console.error('Error adding product to cart:', error.response ? error.response.data : error.message);
     res.status(500).json({ message: 'Error adding product to cart' });
   }
 });
 
-// Example route to remove an item from the cart
-app.delete('/api/cart', async (req, res) => {
+// Route to remove an item from the cart
+app.delete('/api/cart/:userId/remove', async (req, res) => {
+  const { userId } = req.params;
+  const { productId } = req.body;
+
   try {
-    const response = await axios.delete('http://localhost:8083/api/cart', { data: req.body }); // Ensure cart service exists
-    res.json(response.data);
+    const response = await axios.delete(`${CART_SERVICE_URL}/api/cart/${userId}/remove`, {
+      data: { productId }
+    });
+    res.status(response.status).json(response.data);
   } catch (error) {
-    res.status(500).json({ message: 'Error removing item from cart' });
+    console.error('Error removing item from cart:', error.message);
+    res.status(500).json({ message: 'Failed to remove item from cart' });
   }
 });
 
-// Example route to place an order
+// Route to place an order via the checkout service
 app.post('/api/orders', async (req, res) => {
   try {
-    const response = await axios.post('http://localhost:8084/api/orders', req.body); // Ensure order service exists
+    const response = await axios.post(`${ORDER_SERVICE_URL}/api/orders`, req.body);
     res.json(response.data);
   } catch (error) {
+    console.error('Error placing order:', error.message);
     res.status(500).json({ message: 'Error placing order' });
   }
 });
 
-// Example route to handle payment
+// Route to handle payments via the payment service
 app.post('/api/payments', async (req, res) => {
   try {
-    const response = await axios.post('http://localhost:8085/api/payments', req.body); // Ensure payment service exists
+    const response = await axios.post(`${PAYMENT_SERVICE_URL}/api/payments`, req.body);
     res.json(response.data);
   } catch (error) {
+    console.error('Error processing payment:', error.message);
     res.status(500).json({ message: 'Error processing payment' });
   }
 });
 
-// Add similar routes for other services as needed...
+// Add more routes for other services as needed
 
+// Start the API Gateway
 app.listen(PORT, () => {
   console.log(`API Gateway listening on port ${PORT}`);
 });

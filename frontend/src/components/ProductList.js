@@ -1,4 +1,3 @@
-// src/components/ProductList.js
 import React, { useEffect, useState, useContext } from 'react';
 import { getProducts, addToCart, removeFromCart, getCartItems } from '../services/api'; // Import getCartItems
 import { Link } from 'react-router-dom';
@@ -30,6 +29,7 @@ const ProductList = () => {
       if (userId) {
         try {
           const cartResponse = await getCartItems(userId); // Fetch user's cart
+          console.log("here  ",cartResponse);
           setCartItems(cartResponse.data.items || []);
         } catch (err) {
           console.error('Error fetching cart items', err);
@@ -52,7 +52,7 @@ const ProductList = () => {
       console.log('User is not authenticated.');
       return;
     }
-
+  
     try {
       const response = await addToCart({
         userId,
@@ -63,8 +63,11 @@ const ProductList = () => {
           },
         ],
       });
-      console.log('Product added to cart:', response.data);
-      setCartItems([...cartItems, { productId, quantity: 1 }]); // Update cart state
+      console.log('Product added to cart:', response.data); // Check the response
+      setCartItems((prevCartItems) => [
+        ...prevCartItems,
+        { productId, quantity: 1 },
+      ]);
     } catch (error) {
       console.error('Error adding to cart:', error);
       alert('Failed to add product to cart');
@@ -92,7 +95,7 @@ const ProductList = () => {
   if (loading)
     return (
       <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-        <div className="spinner-border" role="status">
+        <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
       </div>
@@ -100,40 +103,42 @@ const ProductList = () => {
 
   if (error)
     return (
-      <div className="alert alert-danger" role="alert">
+      <div className="alert alert-danger text-center" role="alert">
         {error}
       </div>
     );
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">Products</h2>
-      <div className="row">
+      <h2 className="text-center mb-4">Our Products</h2>
+      <div className="row g-4">
         {products.map((product) => (
-          <div className="col-md-4" key={product._id}>
-            <div className="card mb-4">
+          <div className="col-lg-4 col-md-6 col-sm-12" key={product._id}>
+            <div className="card h-100 shadow-sm border-light rounded">
               <img src={product.image} className="card-img-top" alt={product.name} />
-              <div className="card-body">
+              <div className="card-body d-flex flex-column">
                 <h5 className="card-title">{product.name}</h5>
                 <p className="card-text">Price: ${product.price}</p>
-                <Link to={`/product/${product._id}`} className="btn btn-primary">
-                  <i className="bi bi-eye"></i> View Details
-                </Link>
-                {isInCart(product._id) ? (
-                  <button
-                    className="btn btn-danger mt-2"
-                    onClick={() => handleRemoveFromCart(product._id)} // Corrected to use the API Gateway
-                  >
-                    Remove from Cart
-                  </button>
-                ) : (
-                  <button
-                    className="btn btn-success mt-2"
-                    onClick={() => handleAddToCart(product._id)} // Corrected to use the API Gateway
-                  >
-                    Add to Cart
-                  </button>
-                )}
+                <div className="d-flex justify-content-between align-items-center mt-auto">
+                  <Link to={`/product/${product._id}`} className="btn btn-primary btn-sm">
+                    <i className="bi bi-eye"></i> View Details
+                  </Link>
+                  {isInCart(product._id) ? (
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleRemoveFromCart(product._id)} // Corrected to use the API Gateway
+                    >
+                      Remove from Cart
+                    </button>
+                  ) : (
+                    <button
+                      className="btn btn-success btn-sm"
+                      onClick={() => handleAddToCart(product._id)} // Corrected to use the API Gateway
+                    >
+                      Add to Cart
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>

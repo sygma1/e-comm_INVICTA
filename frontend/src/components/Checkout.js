@@ -17,48 +17,56 @@ const Checkout = () => {
     };
 
     return (
-        <div>
+        <div className="container mt-4">
             <h2>Checkout</h2>
-            <form onSubmit={handleCheckout}>
-                <div>
-                    <label>Shipping Address:</label>
-                    <input 
-                        type="text" 
-                        value={shippingAddress} 
-                        onChange={(e) => setShippingAddress(e.target.value)} 
-                        required 
+            <form onSubmit={handleCheckout} className="mt-4">
+                <div className="mb-3">
+                    <label htmlFor="shippingAddress" className="form-label">Shipping Address:</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="shippingAddress"
+                        value={shippingAddress}
+                        onChange={(e) => setShippingAddress(e.target.value)}
+                        required
                     />
                 </div>
-                <div>
-                    <label>Card Number:</label>
-                    <input 
-                        type="text" 
-                        value={paymentInfo.cardNumber} 
-                        onChange={(e) => setPaymentInfo({ ...paymentInfo, cardNumber: e.target.value })} 
-                        required 
+                <div className="mb-3">
+                    <label htmlFor="cardNumber" className="form-label">Card Number:</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="cardNumber"
+                        value={paymentInfo.cardNumber}
+                        onChange={(e) => setPaymentInfo({ ...paymentInfo, cardNumber: e.target.value })}
+                        required
                     />
                 </div>
-                <div>
-                    <label>Expiration Date:</label>
-                    <input 
-                        type="text" 
-                        value={paymentInfo.expiration} 
-                        onChange={(e) => setPaymentInfo({ ...paymentInfo, expiration: e.target.value })} 
-                        required 
+                <div className="mb-3">
+                    <label htmlFor="expiration" className="form-label">Expiration Date:</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="expiration"
+                        value={paymentInfo.expiration}
+                        onChange={(e) => setPaymentInfo({ ...paymentInfo, expiration: e.target.value })}
+                        required
                     />
                 </div>
-                <div>
-                    <label>CVV:</label>
-                    <input 
-                        type="text" 
-                        value={paymentInfo.cvv} 
-                        onChange={(e) => setPaymentInfo({ ...paymentInfo, cvv: e.target.value })} 
-                        required 
+                <div className="mb-3">
+                    <label htmlFor="cvv" className="form-label">CVV:</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="cvv"
+                        value={paymentInfo.cvv}
+                        onChange={(e) => setPaymentInfo({ ...paymentInfo, cvv: e.target.value })}
+                        required
                     />
                 </div>
-                <button type="submit">Complete Purchase</button>
+                <button type="submit" className="btn btn-primary">Complete Purchase</button>
             </form>
-            {message && <div>{message}</div>}
+            {message && <div className="mt-3 alert alert-info">{message}</div>}
         </div>
     );
 };

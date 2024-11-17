@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 8081;
 
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect('mongodb://mongo-service:27017/mydatabase', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })

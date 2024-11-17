@@ -7,14 +7,16 @@ const cartRoutes = require('./routes/cartRoutes');  // Import cartRoutes.js
 const app = express();
 const PORT = process.env.PORT || 8083;
 
+const FRONTEND_URL='http://localhost:80';
+
 app.use(express.json());
 
 app.use(cors({
-  origin: 'http://localhost:3000',  // Allow only requests from this domain
+  origin: FRONTEND_URL,  // Allow only requests from this domain
 }));
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/mydatabase', {
+mongoose.connect('mongodb://mongo-service:27017/mydatabase', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })

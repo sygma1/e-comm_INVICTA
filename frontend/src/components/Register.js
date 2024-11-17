@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 const Register = () => {
     const [userData, setUserData] = useState({ username: '', password: '', email: '' });
     const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
     const history = useHistory();
 
     const handleChange = (e) => {
@@ -12,19 +13,44 @@ const Register = () => {
         setUserData({ ...userData, [name]: value });
     };
 
+    const validateForm = () => {
+        if (!userData.email || !userData.username || !userData.password) {
+            return 'All fields are required.';
+        }
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (!emailRegex.test(userData.email)) {
+            return 'Please enter a valid email address.';
+        }
+        if (userData.password.length < 6) {
+            return 'Password must be at least 6 characters long.';
+        }
+        return null;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const formError = validateForm();
+        if (formError) {
+            setError(formError);
+            setMessage('');
+            return;
+        }
+
         try {
             const response = await registerUser(userData); // Send registration request
             console.log('Registration successful:', response); // Log response (optional)
-            setMessage('Registration successful');
+            setMessage('Registration successful. Redirecting to login...');
+            setError('');
             // Redirect to login page and pass user data as state
-            history.push({
-                pathname: '/login',
-                state: { username: userData.username, password: userData.password },
-            });
+            setTimeout(() => {
+                history.push({
+                    pathname: '/login',
+                    state: { username: userData.username, password: userData.password },
+                });
+            }, 2000); // Delay before redirecting
         } catch (error) {
-            setMessage('Registration failed');
+            setMessage('');
+            setError('Registration failed. Please try again.');
             console.error('Registration error:', error);
         }
     };
@@ -85,6 +111,9 @@ const Register = () => {
                     </div>
                     <button type="submit" className="btn btn-primary w-100">Register</button>
                 </form>
+                
+                {/* Display error or success message */}
+                {error && <div className="mt-3 alert alert-danger">{error}</div>}
                 {message && <div className="mt-3 alert alert-info">{message}</div>}
 
                 {/* Login Button */}
