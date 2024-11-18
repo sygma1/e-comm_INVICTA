@@ -18,7 +18,7 @@ RUN ls -al /app
 COPY . .
 
 # Build the application.
-RUN npm run build
+RUN npm run build --verbose
 
 # Expose the port that the app runs on.
 EXPOSE 3000
