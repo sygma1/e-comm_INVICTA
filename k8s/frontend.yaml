@@ -6,8 +6,7 @@ spec:
   selector:
     app: frontend
   ports:
-    
-protocol: TCP
-    port: 80
-    targetPort: 80
-type: LoadBalancer  # Exposes the service to the outside of the cluster
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer  # Exposes the service to the outside of the cluster

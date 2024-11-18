@@ -13,11 +13,10 @@ spec:
         app: user-service
     spec:
       containers:
-        
-name: user-service
-        image: silou19/e-com-devops:user-service
-        ports:
-containerPort: 8081
+        - name: user-service
+          image: silou19/e-com-devops:user-service
+          ports:
+            - containerPort: 8081
 ---
 apiVersion: v1
 kind: Service
@@ -27,8 +26,7 @@ spec:
   selector:
     app: user-service
   ports:
-    
-protocol: TCP
-    port: 80
-    targetPort: 8081
-type: ClusterIP
+    - protocol: TCP
+      port: 80
+      targetPort: 8081
+  type: ClusterIP

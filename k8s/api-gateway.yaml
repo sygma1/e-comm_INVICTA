@@ -13,11 +13,10 @@ spec:
         app: api-gateway
     spec:
       containers:
-        
-name: api-gateway
-        image: silou19/e-commerce:api-gateway
-        ports:
-containerPort: 8080
+        - name: api-gateway
+          image: silou19/e-commerce:api-gateway
+          ports:
+            - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
@@ -27,8 +26,7 @@ spec:
   selector:
     app: api-gateway
   ports:
-    
-protocol: TCP
-    port: 80
-    targetPort: 8080
-type: LoadBalancer
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer

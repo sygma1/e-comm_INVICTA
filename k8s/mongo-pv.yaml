@@ -7,9 +7,8 @@ spec:
     storage: 1Gi  # Adjust size if needed
   volumeMode: Filesystem
   accessModes:
-    
-ReadWriteOnce
-persistentVolumeReclaimPolicy: Retain
-storageClassName: manual
-hostPath:
-  path: /mnt/data  # Path to store the data on the node (for testing, can use a hostPath)
+    - ReadWriteOnce  # Only one pod can access the volume at a time
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: manual
+  hostPath:
+    path: /mnt/data  # Path to store the data on the node (for testing, can use a hostPath)
