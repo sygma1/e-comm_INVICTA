@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-pv
+spec:
+  capacity:
+    storage: 1Gi  # Adjust size if needed
+  volumeMode: Filesystem
+  accessModes:
+    
+ReadWriteOnce
+persistentVolumeReclaimPolicy: Retain
+storageClassName: manual
+hostPath:
+  path: /mnt/data  # Path to store the data on the node (for testing, can use a hostPath)

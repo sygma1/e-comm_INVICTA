@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-deployment
+  labels:
+    app: mongo
+spec:
+  replicas: 1  # You can adjust the number of replicas depending on your use case
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        
+name: mongo
+        image: mongo:latest  # Use the official MongoDB image
+        ports:
+containerPort: 27017  # MongoDB's default port
+      volumeMounts:
+name: mongo-data
+        mountPath: /data/db  # Mount the volume to persist data
+volumes:
+name: mongo-data
+  persistentVolumeClaim:
+    claimName: mongo-pvc  # Define a PVC to persist data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+spec:
+  selector:
+    app: mongo
+  ports:
+protocol: TCP
+    port: 27017
+    targetPort: 27017  # The port MongoDB is listening on inside the container
+type: ClusterIP  # Internal access to the MongoDB service
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pvc
+spec:
+  accessModes:
+    
+ReadWriteOnce  # Only one pod can access the volume at a time
+resources:
+  requests:
+    storage: 1Gi  # Define the storage size for the MongoDB data
