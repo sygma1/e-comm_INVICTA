@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: silou19/e-com-devops:frontend-react  # Image for the frontend app
+          image: silou19/frontend:latest  # Image for the frontend app
           ports:
             - containerPort: 80  # React build output is typically served on port 80 for static files
           env:
