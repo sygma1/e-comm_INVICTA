@@ -1,24 +1,25 @@
-# Use the official Node.js LTS image
-FROM node:16-alpine
+# Use the official Node.js image.
+FROM node:14
 
-# Set the working directory
+# Set the working directory.
 WORKDIR /app
 
-# Copy package.json and package-lock.json files
-COPY package.json package-lock.json ./
+# Copy package.json and package-lock.json files.
+COPY package.json ./
 
-# Install dependencies
-RUN npm install --production
+# Install dependencies.
+RUN npm install
 
-# Copy the rest of the application code
+RUN ls -al /app
+
+# Copy the rest of the application code.
 COPY . .
 
-# Build the application
-RUN npm run build
+# Build the application.
+RUN npm run build --verbose
 
-# Expose the port the app will run on
+# Expose the port that the app runs on.
 EXPOSE 3000
 
-# Use a lightweight web server to serve static files in production
-RUN npm install -g serve
-CMD ["serve", "-s", "build", "-l", "3000"]
+# Start the app.
+CMD ["npm", "start"]
