@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: product-service
-          image: yourusername/product-service:latest
+          image: silou19/product-service:latest
           ports:
             - containerPort: 4000
 ---

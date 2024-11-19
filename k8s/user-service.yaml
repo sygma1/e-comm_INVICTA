@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: silou19/e-com-devops:user-service
+          image: silou19/user-service:latest
           ports:
             - containerPort: 8081
 ---

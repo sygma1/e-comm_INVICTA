@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api-gateway
-          image: silou19/e-commerce:api-gateway
+          image: silou19/api-gateway:latest
           ports:
             - containerPort: 8080
 ---
