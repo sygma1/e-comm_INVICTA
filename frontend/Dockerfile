@@ -10,6 +10,9 @@ COPY package*.json ./
 # Install dependencies, using legacy-peer-deps to prevent dependency issues
 RUN npm install --legacy-peer-deps
 
+# Add a step to check the installed packages (for debugging)
+RUN npm ls
+
 # Copy the rest of the application code into the container
 COPY . .
 
