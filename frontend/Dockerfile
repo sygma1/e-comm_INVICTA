@@ -1,25 +1,23 @@
-# Use the official Node.js image.
-FROM node:14
+# Use the official Node.js image (latest LTS version)
+FROM node:18-alpine
 
-# Set the working directory.
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json files.
-COPY package.json ./
+# Copy package.json and package-lock.json to the container
+COPY package*.json ./
 
-# Install dependencies.
-RUN npm install
+# Install dependencies, using legacy-peer-deps to prevent dependency issues
+RUN npm install --legacy-peer-deps
 
-RUN ls -al /app
-
-# Copy the rest of the application code.
+# Copy the rest of the application code into the container
 COPY . .
 
-# Build the application.
-RUN npm run build --verbose
+# Build the React app for production
+RUN npm run build
 
-# Expose the port that the app runs on.
+# Expose port 3000 (or the port your app runs on)
 EXPOSE 3000
 
-# Start the app.
+# Start the app in production mode
 CMD ["npm", "start"]
